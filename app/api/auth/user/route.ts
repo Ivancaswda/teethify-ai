@@ -29,7 +29,8 @@ export async function GET(req: Request) {
                 userName: user.userName,
                 createdAt: user.createdAt,
                 avatarUrl: user?.avatarUrl,
-                isPremium: user?.isPremium
+                isPremium: user?.isPremium,
+                isBasic: user?.isBasic
             },
         })
     } catch (err: any) {

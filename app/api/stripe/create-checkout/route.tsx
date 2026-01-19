@@ -9,10 +9,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(req: Request) {
-    const { userEmail } = await req.json();
-    const users = await db.select().from(usersTable).where(eq(usersTable.email, userEmail))
+    const { userEmail, plan } = await req.json();
 
-    const user = users[0]
+    const users = await db
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.email, userEmail));
+
+    const user = users[0];
     if (!user) {
         return NextResponse.json({ error: "USER_NOT_FOUND" }, { status: 404 });
     }
@@ -29,7 +33,24 @@ export async function POST(req: Request) {
         await db
             .update(usersTable)
             .set({ stripeCustomerId: customerId })
-            .where(eq(usersTable.email, user.email));
+            .where(eq(usersTable.id, user.id));
+    }
+
+    const priceMap = {
+        basic: {
+            amount: 99000,
+            name: "Teethify Basic",
+        },
+        premium: {
+            amount: 199000,
+            name: "Teethify Premium",
+        },
+    };
+
+    const selectedPlan = priceMap[plan];
+
+    if (!selectedPlan) {
+        return NextResponse.json({ error: "INVALID_PLAN" }, { status: 400 });
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -40,15 +61,16 @@ export async function POST(req: Request) {
                 price_data: {
                     currency: "rub",
                     product_data: {
-                        name: "UIXIFY Premium",
+                        name: selectedPlan.name,
                     },
-                    unit_amount: 19900,
+                    unit_amount: selectedPlan.amount,
                 },
                 quantity: 1,
             },
         ],
         metadata: {
             userId: String(user.id),
+            plan,
         },
         success_url: `${process.env.NEXT_PUBLIC_APP_URL}/premium/success`,
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,

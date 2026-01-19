@@ -38,6 +38,7 @@ export async function POST(req: Request) {
                     email,
                     password: "", // не нужен для Google
                     isPremium: 0,
+                    isBasic: 0,
                     avatarUrl: picture,
                     createdAt: new Date(),
                     stripeCustomerId: null

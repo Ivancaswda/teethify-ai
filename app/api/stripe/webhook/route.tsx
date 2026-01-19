@@ -24,10 +24,27 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
 
         const userId = session.metadata?.userId;
-        if (userId) {
+        const plan = session.metadata?.plan;
+
+        if (!userId || !plan) return;
+
+        if (plan === "basic") {
             await db
                 .update(usersTable)
-                .set({ isPremium: 1 })
+                .set({
+                    isBasic: 1,
+                    isPremium: 0,
+                })
+                .where(eq(usersTable.id, Number(userId)));
+        }
+
+        if (plan === "premium") {
+            await db
+                .update(usersTable)
+                .set({
+                    isPremium: 1,
+                    isBasic: 0,
+                })
                 .where(eq(usersTable.id, Number(userId)));
         }
     }
