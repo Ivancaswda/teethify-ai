@@ -5,7 +5,7 @@ import { MapPinIcon, PhoneIcon, StarIcon } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { DoctorCardsLoading } from "./DoctorCardsLoading";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {toast} from "sonner";
 import axios from "axios";
 
@@ -23,6 +23,11 @@ function DoctorSelectionStep({
     const [dentists, setDentists] = useState([])
     const [loading, setLoading] = useState<boolean>()
 
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, []);
     useEffect(() => {
         getAvailableDoctors()
     }, []);
@@ -51,7 +56,7 @@ function DoctorSelectionStep({
     );
     console.log(dentists)
   return (
-    <div className="space-y-6">
+    <div ref={containerRef} className="space-y-6">
       <h2 className="text-2xl font-semibold my-4">Выберите нужного стоматолога</h2>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

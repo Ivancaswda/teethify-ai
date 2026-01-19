@@ -3,7 +3,7 @@ import { APPOINTMENT_TYPES, getAvailableTimeSlots, getNext5Days } from "@/lib/ut
 import { Button } from "../ui/button";
 import { ChevronLeftIcon, ClockIcon } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {toast} from "sonner";
 import axios from "axios";
 
@@ -34,6 +34,11 @@ function TimeSelectionStep({
  const availableTimeSlots = getAvailableTimeSlots()
   const availableDates = getNext5Days();
   const [loading, setLoading] = useState<boolean>(false)
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, []);
   useEffect(() => {
    selectedDate && selectedDentistId &&  getBookedSlots()
   }, [selectedDate, selectedDentistId]);
@@ -59,7 +64,7 @@ function TimeSelectionStep({
     console.log('selectedType===')
     console.log(selectedType)
   return (
-    <div className="space-y-6">
+    <div ref={containerRef} className="space-y-6">
       {/* header with back button */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" onClick={onBack}>

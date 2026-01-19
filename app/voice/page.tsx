@@ -1,18 +1,29 @@
+"use client"
 import Navbar from "@/components/Navbar";
 import FeatureCards from "@/components/voice/FeatureCards";
 import ProPlanRequired from "@/components/voice/ProPlanRequired";
 import VapiWidget from "@/components/voice/VapiWidget";
 import WelcomeSection from "@/components/voice/WelcomeSection";
 
-import getServerUser from "@/lib/auth-server";
-import {redirect} from "next/navigation";
 
-async function VoicePage() {
-    const user = await getServerUser()
+import {useAuth} from "@/context/useAuth";
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
+import {LoaderOne} from "@/components/ui/loader";
 
-
-    if (!user) {
-        redirect('/sign-up')
+function VoicePage() {
+    const {user, loading} = useAuth()
+    const router  =useRouter()
+    console.log(user)
+    useEffect(() => {
+        if (!user && !loading) {
+            router.replace('/')
+        }
+    }, [user, loading, router]);
+    if (!user && loading) {
+        return  <div className='flex items-center justify-center w-screen h-screen'>
+            <LoaderOne/>
+        </div>
     }
   return (
     <div className="min-h-screen bg-background">
@@ -22,7 +33,7 @@ async function VoicePage() {
         <WelcomeSection />
         <FeatureCards />
       </div>
-        {user?.isPremium ? <VapiWidget /> : <ProPlanRequired/>}
+        {user?.isBasic === 1 || user?.isPremium === 1 ? <VapiWidget /> : <ProPlanRequired/>}
 
     </div>
   );

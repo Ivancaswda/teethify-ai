@@ -12,7 +12,7 @@ function Hero() {
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/10 to-primary/5" />
 
-        <div style={{gap: '170px'}} className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2  items-center">
+        <div style={{gap: '250px'}} className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2  items-center">
           {/* LEFT */}
           <div className="space-y-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
@@ -49,13 +49,19 @@ function Hero() {
             {/* SOCIAL PROOF */}
             <div className="flex items-center gap-6 pt-6">
               <div className="flex -space-x-3">
-                {Array.from({ length: 5 }).map((_, i) => (
-                    <Image
+                {[
+                    "https://thispersonnotexist.org/static/img/Random_female_face_1.jpeg",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcI7poEX1elHUW4ZIiJvuJDe-67OQEB83Ueg&s",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9QGBgpsEkbxZpgU-8AEElsXL-wk1kJECNBA&s",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv8wIwWxj1xwXhS4L10N1LE0baLAkPtUbpBQ&s",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy4doqqpcVao4xHXIq5sHCzYbh7-twfrr9eg&s"
+
+                ].map((item, i) => (
+                    <img
                         key={i}
-                        src={`https://images.unsplash.com/photo-15${i}4005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face`}
+                        src={item}
                         alt="Пользователь"
-                        width={48}
-                        height={48}
+              style={{width: '40px', height: '40px'}}
                         className="rounded-full ring-4 ring-background"
                     />
                 ))}

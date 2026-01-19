@@ -13,7 +13,8 @@ export async function GET(req:NextRequest) {
         if (!user) {
             return NextResponse.json({error: 'Unauthorized'}, {status: 400})
         }
-
+        console.log('user===')
+        console.log(user)
 
         const appointments = await db
             .select({

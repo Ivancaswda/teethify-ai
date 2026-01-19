@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { ChevronLeftIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import DoctorInfo from "./DoctorInfo";
+import {useEffect, useRef} from "react";
 
 interface BookingConfirmationStepProps {
   selectedDentistId: string;
@@ -25,10 +26,15 @@ function BookingConfirmationStep({
   onConfirm,
   onModify,
 }: BookingConfirmationStepProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
   const appointmentType = APPOINTMENT_TYPES.find((t) => t.id === selectedType);
 
   return (
-    <div className="space-y-6">
+    <div ref={containerRef} className="space-y-6">
       {/* Header with back button */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" onClick={onBack}>

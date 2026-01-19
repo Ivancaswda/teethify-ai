@@ -29,7 +29,7 @@ function DoctorInfo({ doctorId }: { doctorId: string }) {
   if (!doctor) return null;
 
   return (
-    <div className="flex items-center gap-4">
+    <div  className="flex items-center gap-4">
 
       <Image
         src={doctor.imageUrl!}

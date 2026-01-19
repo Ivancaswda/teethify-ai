@@ -3,8 +3,8 @@ import Image from "next/image";
 
 function WhatToAsk() {
   return (
-      <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background to-muted/20">
-        <div className="relative z-10 max-w-7xl mx-auto">
+      <section id='faq' className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background to-muted/20">
+        <div  className="relative z-10 max-w-7xl mx-auto">
 
           <div className="text-center mb-24">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-primary/5 rounded-full border border-primary/20 backdrop-blur-sm mb-6">

@@ -40,9 +40,9 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-2 border-b border-border/50 bg-background/80 backdrop-blur-md h-16">
       <div className="max-w-7xl mx-auto flex justify-between items-center h-full">
-        {/* LOGO */}
+
         <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
            <GiToothbrush className='size-8 text-primary cursor-pointer'/>
           </Link>
 
@@ -56,7 +56,7 @@ function Navbar() {
               }`}
             >
               <HomeIcon className="w-4 h-4" />
-              <span className="hidden md:inline">Dashboard</span>
+              <span className="hidden md:inline">Панель управления</span>
             </Link>
 
             <Link
@@ -66,7 +66,7 @@ function Navbar() {
               }`}
             >
               <CalendarIcon className="w-4 h-4" />
-              <span className="hidden md:inline">Appointments</span>
+              <span className="hidden md:inline">Приемы</span>
             </Link>
 
             <Link
@@ -76,16 +76,16 @@ function Navbar() {
               }`}
             >
               <MicIcon className="w-4 h-4" />
-              <span className="hidden md:inline">Voice</span>
+              <span className="hidden md:inline">AI Teethify</span>
             </Link>
             <Link
               href="/pro"
               className={`flex items-center gap-2 transition-colors hover:text-foreground ${
-                pathname === "/pro" ? "text-foreground" : "text-muted-foreground"
+                pathname === "/pricing" ? "text-foreground" : "text-muted-foreground"
               }`}
             >
               <CrownIcon className="w-4 h-4" />
-              <span className="hidden md:inline">Pro</span>
+              <span className="hidden md:inline">Premium</span>
             </Link>
           </div>
         </div>

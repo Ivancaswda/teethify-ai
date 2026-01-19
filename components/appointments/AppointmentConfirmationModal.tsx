@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircleIcon, MailIcon, CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {useAuth} from "@/context/useAuth";
 
 interface AppointmentConfirmationModalProps {
   open: boolean;
@@ -28,6 +29,8 @@ export function AppointmentConfirmationModal({
   appointmentDetails,
     doctorName
 }: AppointmentConfirmationModalProps) {
+  const {user} = useAuth()
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
@@ -46,7 +49,7 @@ export function AppointmentConfirmationModal({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Email Notification Section */}
+
           <div className="flex flex-col items-center space-y-3">
             <div className="relative">
               <Image
@@ -63,8 +66,8 @@ export function AppointmentConfirmationModal({
                 <MailIcon className="h-4 w-4" />
                Информация отправлена на почту
               </div>
-              {appointmentDetails?.userEmail && (
-                <p className="text-xs text-muted-foreground">{appointmentDetails.userEmail}</p>
+              {user?.email && (
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
               )}
             </div>
           </div>
@@ -77,7 +80,7 @@ export function AppointmentConfirmationModal({
               <div className="space-y-2">
                 <div className="flex items-center gap-3 text-sm">
                   <UserIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{appointmentDetails.doctorName}</span>
+                  <span className="font-medium">{doctorName}</span>
                 </div>
 
                 <div className="flex items-center gap-3 text-sm">

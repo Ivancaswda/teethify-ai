@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MicIcon } from "lucide-react";
+import Link from "next/link";
 
 function CTA() {
   return (
@@ -13,9 +14,12 @@ function CTA() {
             <p className="text-xl text-muted-foreground mb-8">
               AI-консультации и запись к врачу — в одном месте
             </p>
-            <Button size="lg">
-              <MicIcon className="mr-2" /> Попробовать бесплатно
-            </Button>
+            <Link href='/voice'>
+              <Button size="lg">
+                <MicIcon className="mr-2" /> Попробовать бесплатно
+              </Button>
+            </Link>
+
           </div>
 
           <Image src="/cta2.png" alt="Teethify" width={400} height={400} />

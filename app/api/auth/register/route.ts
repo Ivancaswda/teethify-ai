@@ -35,11 +35,12 @@ export async function POST(req: Request) {
             avatarUrl: null,
             isPremium: 0,
             isBasic: 0,
+            aiCallCount: 0
 
         }).returning();
 
         const user = insertedUser[0];
-        const token = generateToken({ email, userName, isPremium: user?.isPremium,  isBasic: user?.isBasic, })
+        const token = generateToken({ email, userName, isPremium: user?.isPremium,  isBasic: user?.isBasic, aiCallCount: user?.aiCallCount })
 
         const res = NextResponse.json({
             message: "Registered",
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
                 avatarUrl: null,
                 createdAt: new Date(),
                 isPremium: user?.isPremium,
+                aiCallCount: user?.aiCallCount,
                 isBasic: user?.isBasic,
                 stripeCustomerId: null
             },

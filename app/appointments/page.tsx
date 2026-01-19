@@ -14,6 +14,7 @@ import axios from "axios";
 import DoctorSkeleton from "@/components/admin/DoctorSkeleton";
 import { Button } from "@/components/ui/button";
 import {ru} from "date-fns/locale";
+import {useAuth} from "@/context/useAuth";
 function StarRating({ onRate }: { onRate: (n: number) => void }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
@@ -44,6 +45,7 @@ function StarRating({ onRate }: { onRate: (n: number) => void }) {
   );
 }
 function AppointmentsPage() {
+  const {user} = useAuth()
   const [rateDoctorId, setRateDoctorId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedDentistId, setSelectedDentistId] = useState<string | null>(null);
@@ -82,6 +84,8 @@ function AppointmentsPage() {
         date: selectedDate,
         time: selectedTime,
         reason: appointmentType?.name,
+        isPremium: user?.isPremium,
+        isBasic: user?.isBasic
       });
       if (data?.doctorName) {
         setDoctorName(data?.doctorName)
@@ -107,6 +111,11 @@ function AppointmentsPage() {
       setSelectedType("");
       setCurrentStep(1);
     } catch (error) {
+      if (error.response?.status === 403) {
+        toast.error(error.response.data.error);
+        return;
+      }
+      console.log(error)
       toast.error("Не удалось забронировать приём");
     } finally {
       setIsBooking(false);

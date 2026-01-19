@@ -1,6 +1,12 @@
+'use client'
 import { Button } from "@/components/ui/button";
+import {useAuth} from "@/context/useAuth";
+import {useRouter} from "next/navigation";
 
 function PricingSection() {
+
+  const {user} = useAuth()
+  const router =useRouter()
   return (
       <section id="pricing" className="py-32 px-6 bg-muted/20">
         <div className="max-w-6xl mx-auto text-center mb-20">
@@ -20,16 +26,28 @@ function PricingSection() {
 
           {/* BASIC */}
           <div className="p-8 rounded-3xl bg-card border-2 border-primary scale-105">
-            <h3 className="text-2xl font-bold mb-2">AI Basic</h3>
+            <h3 className="text-2xl font-bold mb-2">Teethify Basic</h3>
             <p className="text-4xl font-bold mb-6 text-primary">990 ₽</p>
-            <Button className="w-full">Подключить</Button>
+            <Button
+                onClick={() => {
+                  router.replace('/pricing')
+                }}
+                disabled={user?.isBasic === 1} className="w-full">
+
+              {user?.isBasic === 1 ? 'Уже есть' : 'Подключить'}
+                  </Button>
           </div>
 
           {/* PRO */}
           <div className="p-8 rounded-3xl bg-card border">
-            <h3 className="text-2xl font-bold mb-2">AI Pro</h3>
+            <h3 className="text-2xl font-bold mb-2">Teethify Premium</h3>
             <p className="text-4xl font-bold mb-6">1 990 ₽</p>
-            <Button variant="outline" className="w-full">Апгрейд</Button>
+            <Button  onClick={() => {
+              router.replace('/pricing')
+            }} disabled={user?.isPremium === 1} variant="outline" className="w-full">
+              {user?.isPremium === 1 ? 'Уже есть' : 'Апгрэйд'}
+
+            </Button>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import axios from "axios";
@@ -9,17 +10,12 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Loader2Icon } from "lucide-react";
-
 import Image from "next/image";
 import {GoogleLoginButton} from "@/app/(auth)/_components/GoogleLoginButton";
 
-
 function SignIn() {
     const { user, setUser } = useAuth()
-    const [form, setForm] = useState({
-        email: '',
-        password: '',
-    })
+    const [form, setForm] = useState({ email: '', password: '' })
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
@@ -27,112 +23,108 @@ function SignIn() {
         e.preventDefault()
         try {
             setIsLoading(true)
-
             const res = await axios.post('/api/auth/login', form)
             const data = await res.data
+
             localStorage.setItem("token", data.token)
 
             const userRes = await fetch("/api/auth/user", {
-                headers: {
-                    Authorization: `Bearer ${data.token}`,
-                },
-            });
-
-            if (!userRes.ok) throw new Error("Failed to fetch user")
+                headers: { Authorization: `Bearer ${data.token}` },
+            })
 
             const userData = await userRes.json()
-            setUser(userData?.user)
+            setUser(userData.user)
 
-            setIsLoading(false)
+            toast.success('Добро пожаловать обратно в Teethify!')
             router.replace('/')
-            toast.success('Добро пожаловать обратно в Wireframify!')
         } catch (error) {
             toast.error('Ошибка входа! Проверьте данные.')
             console.log(error)
+        } finally {
             setIsLoading(false)
         }
     }
 
-    const handleGoogleSignIn = async () => {}
-
     useEffect(() => {
-        if (user) {
-            router.replace("/")
-        }
+        if (user) router.replace("/")
     }, [user, router])
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary via-green-400 to-blue-100 px-4">
-            <div className="w-full max-w-md rounded-2xl bg-white/90 shadow-xl p-8 backdrop-blur-md dark:bg-zinc-900">
+        <div className="min-h-screen grid lg:grid-cols-2">
 
+            {/* LEFT – FORM */}
+            <div className="flex items-center justify-center px-6">
+                <div className="w-full max-w-md space-y-6">
+                    <div className='flex flex-col gap-2'>
+                        <h2 className="text-4xl font-bold">
+                            Вход в <span className="text-primary">Teethify</span>
+                        </h2>
+                        <p className="text-sm text-muted-foreground my-2">
+                            Управляйте приёмами и общением с AI-ассистентом
+                        </p>
+                    </div>
 
-                <div className="flex justify-center mb-6">
-                    <Image src="/logo.png" alt="Wireframify Logo" className="rounded-xl" width={140} height={140}/>
+                    <form  className="space-y-4 mt-4" onSubmit={handleLogin}>
+                        <LabelInputContainer>
+                            <Label>Email</Label>
+                            <Input
+                                type="email"
+                                placeholder="you@example.com"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                            />
+                        </LabelInputContainer>
+
+                        <LabelInputContainer>
+                            <Label>Пароль</Label>
+                            <Input
+                                type="password"
+                                placeholder="••••••••"
+                                value={form.password}
+                                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                            />
+                        </LabelInputContainer>
+
+                        <button
+                            type="submit"
+                            className="flex h-10 w-full items-center justify-center rounded-md bg-primary text-white font-medium transition hover:opacity-90"
+                        >
+                            {isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+                            Войти
+                        </button>
+                    </form>
+
+                    <p className="text-sm text-muted-foreground mt-2 mb-2 text-center">
+                        Нет аккаунта?{" "}
+                        <Link href="/sign-up" className="text-primary hover:underline">
+                            Создать аккаунт
+                        </Link>
+                    </p>
+                    <GoogleLoginButton/>
                 </div>
+            </div>
 
-                <h2 className="text-2xl font-bold text-center ">
-                    Добро пожаловать в <span className="text-primary">UIxify</span>
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-500">
-                    Войдите, чтобы продолжить работу с вашими проектами.
+
+            <div className="flex-col flex lg:flex-row items-center justify-center bg-gradient-to-br from-primary via-green-400 to-blue-200 text-white px-10">
+                <Image
+                    src="/logo.png"
+                    alt="Teethify Logo"
+                    width={160}
+                    height={160}
+                    className="rounded-2xl mb-6 bg-white"
+                />
+                <h3 className="text-3xl font-bold mb-4">Teethify</h3>
+                <p className="text-center text-white/90 max-w-sm">
+                    AI-платформа для удобного бронирования стоматологов и умных звонков
+                    для заботы о вашей улыбке.
                 </p>
-
-                <form className="mt-6 space-y-4" onSubmit={handleLogin}>
-                    <LabelInputContainer>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            value={form.email}
-                            onChange={(e) => setForm({...form, email: e.target.value})}
-                            type="email"
-                            id="email"
-                            placeholder="you@example.com"
-                        />
-                    </LabelInputContainer>
-
-                    <LabelInputContainer>
-                        <Label htmlFor="password">Пароль</Label>
-                        <Input
-                            value={form.password}
-                            onChange={(e) => setForm({...form, password: e.target.value})}
-                            type="password"
-                            id="password"
-                            placeholder="••••••••"
-                        />
-                    </LabelInputContainer>
-
-                    <button
-                        className="relative flex h-10 w-full items-center justify-center rounded-lg bg-primary text-white font-medium shadow-md transition hover:opacity-90"
-                        type="submit"
-                    >
-                        {isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin"/>}
-                        Войти →
-                    </button>
-                </form>
-
-                <p className="mt-4 text-center text-sm text-gray-500">
-                    Нет аккаунта? <Link href="/sign-up" className="text-primary hover:underline">Создать аккаунт</Link>
-                </p>
-
-                <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-gray-300 to-transparent"/>
-                {/* <GoogleLoginButton/>*/}
-
             </div>
         </div>
     )
 }
 
-const SocialButton = ({icon, text, handleProvider}: {icon: React.ReactNode, text: string, handleProvider:any}) => (
-    <button
-        onClick={handleProvider}
-        className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 dark:bg-zinc-800 dark:text-gray-200"
-        type="button"
-    >
-        {icon} {text}
-    </button>
-)
-
-const LabelInputContainer = ({children, className}: {children: React.ReactNode, className?: string}) => (
-    <div className={cn("flex w-full flex-col space-y-2", className)}>
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+    <div className={cn("flex flex-col space-y-2", className)}>
         {children}
     </div>
 )

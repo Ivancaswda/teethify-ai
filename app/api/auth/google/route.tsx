@@ -38,6 +38,7 @@ export async function POST(req: Request) {
                     email,
                     password: "", // не нужен для Google
                     isPremium: 0,
+                    aiCallCount: 0,
                     isBasic: 0,
                     avatarUrl: picture,
                     createdAt: new Date(),
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
         }
 
 
-        const token = generateToken({ email: user.email, userName: user.userName, isPremium: user?.isPremium });
+        const token = generateToken({ email: user.email, userName: user.userName, isPremium: user?.isPremium, isBasic: user?.isBasic, aiCallCount: user?.aiCallCount });
 
         const res = NextResponse.json({
             message: "Google login successful",
@@ -66,6 +67,8 @@ export async function POST(req: Request) {
                 userName: user.userName,
                 avatarUrl: user.avatarUrl,
                 isPremium: user.isPremium,
+                isBasic: user?.isBasic,
+                aiCallCount: user?.aiCallCount
             },
         });
 

@@ -16,7 +16,8 @@ async function getServerUser() {
             userName: string,
             id: string,
             isPremium:boolean,
-            isBasic: boolean
+            isBasic: boolean,
+            aiCallCount: number
         }
         return decoded!
     } catch (err) {

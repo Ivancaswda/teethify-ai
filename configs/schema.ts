@@ -21,7 +21,8 @@ export const usersTable = pgTable("users", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
     isPremium: integer().default(0),
     isBasic: integer().default(0),
-    stripeCustomerId: varchar()
+    stripeCustomerId: varchar(),
+    aiCallCount: integer().default(0),
 });
 export const genderEnum = pgEnum("gender", ["MALE", "FEMALE"]);
 export const appointmentStatusEnum = pgEnum(

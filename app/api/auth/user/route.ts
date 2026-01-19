@@ -30,7 +30,8 @@ export async function GET(req: Request) {
                 createdAt: user.createdAt,
                 avatarUrl: user?.avatarUrl,
                 isPremium: user?.isPremium,
-                isBasic: user?.isBasic
+                isBasic: user?.isBasic,
+                aiCallCount: user?.aiCallCount
             },
         })
     } catch (err: any) {

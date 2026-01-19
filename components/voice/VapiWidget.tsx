@@ -9,18 +9,21 @@ import {FaBrain} from "react-icons/fa";
 import VapiApiKeyDialog from "@/components/voice/VapiApiKeyDialog";
 import Vapi from "@vapi-ai/web";
 import {toast} from "sonner";
+import {useRouter} from "next/navigation";
+import axios from "axios";
 
 function VapiWidget() {
   const [showDialog, setShowDialog] = useState(false);
   const [vapiClient, setVapiClient] = useState<Vapi | null>(null);
 
+  const router =useRouter()
   const [callActive, setCallActive] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [callEnded, setCallEnded] = useState(false);
   const visibleMessages = messages.slice(-8);
-  const { user, loading } = useAuth();
+  const { user, loading, callCount, setCallCount } = useAuth();
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
   // auto-scroll for messages
@@ -45,7 +48,21 @@ function VapiWidget() {
       setConnecting(false);
       setIsSpeaking(false);
       setCallEnded(true);
+      if (user?.isBasic === 1) {
+        updateCallCount()
+      }
     };
+    const updateCallCount = async () => {
+      try {
+        const newCount = user?.aiCallCount + 1;
+
+        await axios.post("/api/update-call-count", {aiCallCount: newCount });
+        setCallCount(newCount);
+      } catch (error) {
+        toast.error('Не удалось обновить кол-во звонков')
+        console.log(error)
+      }
+    }
 
     const handleSpeechStart = () => setIsSpeaking(true);
     const handleSpeechEnd = () => setIsSpeaking(false);
@@ -91,9 +108,14 @@ function VapiWidget() {
       return;
     }
 
-    // 👉 если нет API key — сначала dialog
+
     if (!vapiClient) {
       setShowDialog(true);
+      return;
+    }
+    if (user?.isBasic === 1 && user?.aiCallCount > 3) {
+      toast.error("Вы достигли лимита 3 звонков для Basic тарифа!");
+      router.replace('/pricing')
       return;
     }
 
@@ -110,7 +132,8 @@ function VapiWidget() {
       setConnecting(false);
     }
   };
-
+  console.log('callCOunt===')
+  console.log(callCount)
   if (loading) return null;
 
   return (
@@ -284,7 +307,7 @@ function VapiWidget() {
               : "bg-primary hover:bg-primary/90"
           } text-white relative`}
           onClick={toggleCall}
-          disabled={connecting || callEnded}
+          disabled={connecting || callEnded || (user?.isBasic === 1 && user?.aiCallCount > 3)}
         >
           {connecting && (
             <span className="absolute inset-0 rounded-full animate-ping bg-primary/50 opacity-75"></span>
@@ -298,9 +321,12 @@ function VapiWidget() {
                    : callEnded
                        ? "Завершено"
                        : "Начать разговор"}
+
           </span>
         </Button>
+
       </div>
+      <p className='text-muted-foreground text-center mt-1 text-sm'>{(user?.isBasic === 1 && user?.aiCallCount > 3) && 'Ваш лимит подписки Basic исчерпан'}</p>
       <VapiApiKeyDialog
           open={showDialog}
           onClose={() => setShowDialog(false)}

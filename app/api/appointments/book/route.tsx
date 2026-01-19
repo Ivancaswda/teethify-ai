@@ -5,7 +5,7 @@ import {appointmentsTable, doctorsTable} from "@/configs/schema";
 import {format} from "date-fns";
 import {sendAppointmentEmail} from "@/lib/mailer";
 import {ru} from "date-fns/locale";
-import {eq} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
     try {
@@ -14,10 +14,25 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { doctorId, date, time, reason } = await req.json();
+        const { doctorId, date, time, reason, isPremium, isBasic } = await req.json();
 
         if (!doctorId || !date || !time) {
             return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        }
+        const upcomingAppointments = await db
+            .select()
+            .from(appointmentsTable)
+            .where(and(
+                eq(appointmentsTable.status, "ПОДТВЕРЖДЕНО"),
+                eq(appointmentsTable.userEmail, user.email)
+            )  )
+        console.log('upcomingAppointments===')
+        console.log(upcomingAppointments)
+        if (isBasic == 0 && isPremium == 0 && upcomingAppointments.length >= 3) {
+            return NextResponse.json(
+                { error: "Вы достигли лимита 3 приёмов для бесплатного пользователя!" },
+                { status: 403 }
+            );
         }
 
         const [appointment] = await db

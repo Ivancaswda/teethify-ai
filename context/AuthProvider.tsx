@@ -8,6 +8,7 @@ interface User {
     avatarUrl?: string | null
     isPremium: boolean
     isBasic: boolean
+
 }
 
 interface AuthContextType {
@@ -15,19 +16,23 @@ interface AuthContextType {
     loading: boolean
     logout: () => void
     setUser: (user: User | null) => void
+    callCount: number,
+    setCallCount: (callCount: number) => void,
 }
 
 export const AuthContext = createContext<AuthContextType>({
     user: null,
     loading: true,
     logout: () => {},
-    setUser: () => {}
+    setUser: () => {},
+    callCount: 0,
+    setCallCount: () => {},
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
-
+    const [callCount, setCallCount] = useState(0)
     useEffect(() => {
         const fetchUser = async () => {
             const token = localStorage.getItem("token")
@@ -65,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, logout, setUser }}>
+        <AuthContext.Provider value={{ user, loading, logout, setUser, callCount,setCallCount }}>
             {children}
         </AuthContext.Provider>
     )
