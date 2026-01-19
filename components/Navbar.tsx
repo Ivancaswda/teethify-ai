@@ -79,7 +79,7 @@ function Navbar() {
               <span className="hidden md:inline">AI Teethify</span>
             </Link>
             <Link
-              href="/pro"
+              href="/pricing"
               className={`flex items-center gap-2 transition-colors hover:text-foreground ${
                 pathname === "/pricing" ? "text-foreground" : "text-muted-foreground"
               }`}

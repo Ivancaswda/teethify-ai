@@ -219,7 +219,7 @@ function AppointmentsPage() {
                   doctorName: bookedAppointment.doctorName,
                   appointmentDate: format(
                       new Date(bookedAppointment.date),
-                      "EEEE, d MMMM yyyy"
+                      "EEEE, d MMMM yyyy", {locale: ru}
                   ),
                   appointmentTime: bookedAppointment.time,
                   userEmail: bookedAppointment.patientEmail,
@@ -233,13 +233,13 @@ function AppointmentsPage() {
                 Ваши предстоящие приёмы
               </h2>
 
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 grid-cols-1">
                 {loading
                     ? [1, 2, 3].map((i) => <DoctorSkeleton key={i} />)
                     : userAppointments.map((appointment: any) => (
                         <div
                             key={appointment.id}
-                            className="bg-card border flex items-center justify-between rounded-lg p-4"
+                            className="bg-card border w-full flex items-center justify-between rounded-lg p-4"
                         >
 
 
