@@ -226,11 +226,13 @@ function VapiWidget() {
         {/* USER CARD */}
         <Card style={{width: '400px', height: '250px'}} className={`bg-card/90   backdrop-blur-sm border overflow-hidden relative`}>
           <div className="aspect-video flex flex-col items-center justify-center p-6 relative">
-            {/* User Image */}
-            <div className="relative size-32 mb-4">
-              <Avatar style={{width: '80px', height: '80px'}} className="cursor-pointer text-4xl ring-2 ring-primary/20 hover:ring-primary transition">
-                <AvatarImage src={user?.avatarUrl} />
-                <AvatarFallback className="bg-primary text-white font-semibold">
+            <div className="relative w-32 h-32 mb-4 rounded-full overflow-hidden ring-2 ring-primary/20">
+              <Avatar className="w-full h-full">
+                <AvatarImage
+                    src={user?.avatarUrl}
+                    className="w-full h-full object-cover"
+                />
+                <AvatarFallback className="w-full h-full flex items-center justify-center bg-primary text-white text-4xl font-semibold">
                   {user?.userName?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>

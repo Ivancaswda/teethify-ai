@@ -68,10 +68,10 @@ export default function VapiApiKeyDialog({ open, onClose, onSave }: Props) {
 
             <Dialog  open={open} onOpenChange={onClose}>
                 <DialogContent
-                    className="w-[70%] !overflow-y-auto rounded-3xl"
+                    className="w-[70%] max-h-[90vh] overflow-y-auto rounded-3xl"
                 >
-                    <DialogHeader>
-                        <DialogTitle className="text-2xl">
+                    <DialogHeader className="sticky top-0 bg-background z-10 pb-4">
+                    <DialogTitle className="text-2xl">
                             🔑 Подключение Vapi API Key
                         </DialogTitle>
                         <DialogDescription>
