@@ -105,7 +105,7 @@ function SignIn() {
             </div>
 
 
-            <div className="flex-col flex  items-center justify-center bg-gradient-to-br from-primary via-green-400 to-blue-200 text-white px-10">
+            <div className="lg:flex flex-col hidden  items-center justify-center bg-gradient-to-br from-primary via-green-400 to-blue-200 text-white px-10">
                 <Image
                     src="/logo.png"
                     alt="Teethify Logo"
