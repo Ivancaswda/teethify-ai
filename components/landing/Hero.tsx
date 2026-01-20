@@ -23,7 +23,12 @@ function Hero() {
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Ответы на <span className="text-primary">стоматологические</span><br />
+              Ответы на{" "}
+              <span className="text-primary">
+    стомато
+    <span className="block sm:inline">логические</span>
+  </span>
+              <br />
               вопросы — мгновенно
             </h1>
 
