@@ -30,16 +30,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+        <head>
+            <script defer
+                    data-website-id="04955ea9-4ded-4ee5-8010-a4dfe4447c35"
+                    data-domain="https://teethify-ai.vercel.app"
+                    src="https://analytity-track.vercel.app/analytics.js">
+            </script>
+        </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <head>
-          <script defer
-                  data-website-id="04955ea9-4ded-4ee5-8010-a4dfe4447c35"
-                  data-domain="https://teethify-ai.vercel.app"
-                  src="https://analytity-track.vercel.app/analytics.js">
-          </script>
-      </head>
+
       <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!} >
           <AuthProvider>
               <Toaster/>
