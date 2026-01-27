@@ -5,45 +5,44 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 export const formatPhoneNumber = (value: string) => {
-  if (!value) return value;
+  if (!value) return "";
 
-  // оставляем только цифры
+
   let digits = value.replace(/\D/g, "");
 
-  // если номер начинается с 8 → заменяем на 7
   if (digits.startsWith("8")) {
     digits = "7" + digits.slice(1);
   }
 
-  // если номер без кода страны
-  if (digits.length === 10) {
+
+  if (digits.startsWith("9")) {
     digits = "7" + digits;
   }
 
-  // максимум 11 цифр (7XXXXXXXXXX)
-  digits = digits.slice(0, 11);
 
-  if (digits.length < 2) return `+${digits}`;
+  digits = digits.slice(0, 11);
 
   let result = "+7";
 
-  if (digits.length > 1) {
-    result += " (" + digits.slice(1, 4);
+  const rest = digits.slice(1);
+
+  if (rest.length > 0) {
+    result += " (" + rest.slice(0, 3);
   }
-  if (digits.length >= 5) {
-    result += ") " + digits.slice(4, 7);
+  if (rest.length >= 4) {
+    result += ") " + rest.slice(3, 6);
   }
-  if (digits.length >= 8) {
-    result += "-" + digits.slice(7, 9);
+  if (rest.length >= 7) {
+    result += "-" + rest.slice(6, 8);
   }
-  if (digits.length >= 10) {
-    result += "-" + digits.slice(9, 11);
+  if (rest.length >= 9) {
+    result += "-" + rest.slice(8, 10);
   }
 
   return result;
 };
 
-//  ai generated 🎉
+
 export const getNext5Days = () => {
   const dates = [];
   const tomorrow = new Date();
